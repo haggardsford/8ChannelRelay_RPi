@@ -6,7 +6,7 @@ import pigpio
 import time
 import sqlite3
 
-
+#daemonize this process
 
 
 if __name__ == "__main__":
