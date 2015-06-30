@@ -5,29 +5,31 @@ import DHT22
 import pigpio
 import time
 
-INTERVAL=3
+if __name__ == "__main__":
+    
+    INTERVAL=3
 
-pi = pigpio.pi()
-s = DHT22.sensor(pi, 25,)
-r = 0
-next_reading = time.time()
+    pi = pigpio.pi()
+    s = DHT22.sensor(pi, 25,)
+    r = 0
+    next_reading = time.time()
 
-while True:
+    while True:
 
-    r += 1
-    s.trigger()
-    time.sleep(0.2)
+        r += 1
+        s.trigger()
+        time.sleep(0.2)
 
-    print("{} {} {} {:3.2f} {} {} {} {}".format(
-        r, s.humidity(), s.temperature(), s.staleness(),
-        s.bad_checksum(), s.short_message(), s.missing_message(),
-        s.sensor_resets()))
+        print("{} {} {} {:3.2f} {} {} {} {}".format(
+            r, s.humidity(), s.temperature(), s.staleness(),
+            s.bad_checksum(), s.short_message(), s.missing_message(),
+            s.sensor_resets()))
 
-    next_reading += INTERVAL
+        next_reading += INTERVAL
 
-    time.sleep(next_reading-time.time()) # Overall INTERVAL second polling.
+        time.sleep(next_reading-time.time()) # Overall INTERVAL second polling.
 
-s.cancel()
+    s.cancel()
 
-pi.stop()
+    pi.stop()
 
