@@ -1,49 +1,34 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 import RPi.GPIO as GPIO
-import time
-
+global pinList
 pinList = [2,3,4,17,27,22,10,9]
-def __init__(self):
-    import RPi.GPIO as GPIO   
-    self.pinList = [2, 3, 4, 17, 27, 22, 10, 9]
+
+def switchOn(relay):
+    if relay.isOn() == False:
+	relay.switchRelay()
+    else: return False
+def switchOff(relay):
+    if relay.isOn() == True:
+	relay.switchRelay()
+    else: return False
+
+class Relay:
+    def __init__(self, relay):
+        self.relay = relay - 1   
+    def pinInit(self):
+   	  
+   	GPIO.setmode(GPIO.BCM)    #init PIN mode
+    	GPIO.setup(pinList[self.relay], GPIO.OUT, initial=GPIO.HIGH) 
 
 # <codecell>
+   
+    def isOn(self):
+    	
+    	if GPIO.input(pinList[self.relay]) ==1:
+            return False
+    	else: return True
 
-
-def pinInit():
-    GPIO.setmode(GPIO.BCM)    #init PIN mode
-    pinList = [2, 3, 4, 17, 27, 22, 10, 9]  # init list with pin numbers
-    for i in range(8):                      # set all relay pins as OUTPUTS
-        GPIO.setup(pinList[i], GPIO.OUT, initial=GPIO.HIGH) 
-
-# <codecell>
-
-def isON(relay):
-    relay = relay - 1
-    if GPIO.input(pinList[relay]) ==1:
-        return False
-    else: return True
-
-# <codecell>
-
-def switchOFF(relay):
-    if isON(relay) == True: switchRelay(relay)
-    else: 
-        return False  #ALREADY OFF
-
-# <codecell>
-
-def switchON(relay):
-    if isON(relay) == False: switchRelay(relay)
-    else: return False #ALREADY ON
-
-# <codecell>
-
-
-def switchRelay(relay):
-    pinList = [2,3,4,17,27,22,10,9]   
-    relay = relay - 1
-    GPIO.output(pinList[relay], not GPIO.input(pinList[relay]))
-            
-
+    def switchRelay(self):
+       	
+    	GPIO.output(pinList[self.relay], not GPIO.input(pinList[self.relay]))
+              
