@@ -24,10 +24,20 @@ if __name__ == "__main__":
         temp = s.temperature()
         hum = s.humidity()
         
-        print("{} {} {} {:3.2f} {} {} {} {}".format(
-            r, s.humidity(), s.temperature(), s.staleness(),
-            s.bad_checksum(), s.short_message(), s.missing_message(),
-            s.sensor_resets()))
+        #Database entries
+        conn = sqlite3.connect('dht.db')
+        c = conn.cursor()
+        c.execute('''CREATE TABLE sensordata
+             (id INTEGER PRIMARY KEY, temp REAL, hum REAL)''')
+             
+        c.execute("INSERT INTO sensordata (temp, hum) VALUES (?,?)"(temp, hum)
+        conn.commit()
+        conn.close()
+        
+        #print("{} {} {} {:3.2f} {} {} {} {}".format(
+        #    r, s.humidity(), s.temperature(), s.staleness(),
+        #    s.bad_checksum(), s.short_message(), s.missing_message(),
+        #    s.sensor_resets()))
 
         next_reading += INTERVAL
 
