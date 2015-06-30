@@ -5,8 +5,10 @@ pinList = (2, 3, 4, 17, 27, 22, 10, 9)          #default pinList for 8-channel r
 
 
 def set_pinList(*args):                         #sets pinList, the list of pins to be initialized for use as relays
-    global pinList                              #pinList should be between 1 and 8 ints long, ex:(1) - (1,2,3,4,5,6,7,8) BCM pin numbering  
-    pinList = args 
+    global pinList                              #pinList should be between 1 and 8 ints long, ex:(1) - (1,2,3,4,5,6,7,8) BCM pin numbering 
+    if len(args) == 0:
+        pinList = (2,3,4,17,27,22,10,9)
+    else: pinList = args 
 
 def pinInit():                   
    GPIO.setmode(GPIO.BCM)                       #sets GPIO to BCM mode
