@@ -12,8 +12,8 @@ def set_pinList(*args):                         #sets pinList, the list of pins 
 
 def pinInit():                   
    GPIO.setmode(GPIO.BCM)                       #sets GPIO to BCM mode
-   for i in pinList:                #initializes all pins in pinList to outputs, HIGH = relay off
-       GPIO.setup(i, GPIO.OUT, \
+   for pin in pinList:                #initializes all pins in pinList to outputs, HIGH = relay off
+       GPIO.setup(pin, GPIO.OUT, \
        initial=GPIO.HIGH) 
 
 def switchOn(relay):                             # switches relay on if off, otherwise returns False
