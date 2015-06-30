@@ -6,6 +6,9 @@ import pigpio
 import time
 import sqlite3
 
+
+
+
 if __name__ == "__main__":
     
     INTERVAL=3
@@ -16,7 +19,8 @@ if __name__ == "__main__":
     next_reading = time.time()
     conn = sqlite3.connect('dht.db')
     c = conn.cursor()
-    c.execute('''CREATE TABLE sensordata (id INTEGER PRIMARY KEY, temp REAL, hum REAL)''')
+    
+    c.execute('''CREATE TABLE IF NOT EXISTS sensordata (id INTEGER PRIMARY KEY, temp REAL, hum REAL)''')
     while True:
 
         r += 1
