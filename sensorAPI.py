@@ -4,6 +4,7 @@ import relay as R
 import DHT22
 import pigpio
 import time
+import sqlite3
 
 if __name__ == "__main__":
     
@@ -19,7 +20,10 @@ if __name__ == "__main__":
         r += 1
         s.trigger()
         time.sleep(0.2)
-
+        
+        temp = s.temperature()
+        hum = s.humidity()
+        
         print("{} {} {} {:3.2f} {} {} {} {}".format(
             r, s.humidity(), s.temperature(), s.staleness(),
             s.bad_checksum(), s.short_message(), s.missing_message(),
