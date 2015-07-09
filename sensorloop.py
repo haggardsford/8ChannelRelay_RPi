@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-import relay as R
 import DHT22
 import pigpio
 import time
