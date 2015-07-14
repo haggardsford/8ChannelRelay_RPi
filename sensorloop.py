@@ -16,12 +16,12 @@ if __name__ == "__main__":
     s = DHT22.sensor(pi, 25,)
     r = 0
     next_reading = time.time()
-    db = sqlite3.connect('dht.db')
-    c = db.cursor()
-    
-    c.execute('''CREATE TABLE IF NOT EXISTS sensordata (id INTEGER PRIMARY KEY, temp REAL, hum REAL)''')
+  
     while True:
-
+        #connect to database, create cursor
+        db = sqlite3.connect('dht.db')
+        c = db.cursor()
+        
         r += 1
         s.trigger()
         time.sleep(0.2)
@@ -30,12 +30,9 @@ if __name__ == "__main__":
         hum = s.humidity()
         
         #Database entries
-        
-        db = sqlite3.connect('dht.db')
-        c = db.cursor()
-       
-        c.execute('''CREATE TABLE sensordata (id INTEGER PRIMARY KEY, temp REAL, hum REAL)''')
-        c.execute("INSERT INTO sensordata (temp, hum) VALUES (?,?)"(temp, hum)
+
+        c.execute('''CREATE TABLE IF NOT EXISTS sensordata (id INTEGER PRIMARY KEY, temp REAL, hum REAL)''')
+        c.execute("INSERT INTO sensordata VALUES (?,?)"(temp, hum))
         
         db.commit()
         db.close()
