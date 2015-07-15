@@ -16,6 +16,11 @@ def get_cdata():
     cdata = c.fetchone()
     return cdata
 
+#get current temperature
+def get_ctemp():
+    
+
+
 def main():
     ctemp, chum = get_cdata()
     
