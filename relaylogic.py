@@ -68,7 +68,7 @@ def get_Heat_Output(temp):
     else: return heat_output   
 
 def PID_Process(relay):
-    if !relay.isOn():
+    if !relay.is_on():          
         temp = get_ctemp()
         activetime = get_Heat_Output(temp)
         cycletime = get_Cycletime()
