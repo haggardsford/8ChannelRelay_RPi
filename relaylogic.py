@@ -41,7 +41,21 @@ def set_setPoint(name, SP):
     setpoint = SP
     name.setPoint(SP)
     return SP
+
+def set_Cycletime(time):
+    cycletime = time
+    return cycletime
+
+def get_Cycletime():
+    return cycletime
+
+def getonofftime(cycletime, dutycycle):
+    duty = duty_cycle/100.0
+    on_time = cycle_time*(duty)
+    off_time = cycle_time*(1.0-duty)   
+    return [on_time, off_time]
     
+
 def get_setPoint():
     return setpoint
 
@@ -53,29 +67,23 @@ def get_Heat_Output(temp):
         return 100 
     else: return heat_output   
 
-'''TAKEN FROM RasPiBrew!!!'''
-'''Edit this to work with dht and relays'''
-def heat_Process(cycle_time, duty_cycle, relay):
-    p = current_process()
-    print 'Starting:', p.name, p.pid
-    if pinNum > 0:
-        GPIO.setup(pinNum, GPIO.OUT)
-        while (True):
-            while (conn.poll()): #get last
-                cycle_time, duty_cycle = conn.recv()
-            conn.send([cycle_time, duty_cycle])  
-            if duty_cycle == 0:
-                GPIO.output(pinNum, OFF)
-                time.sleep(cycle_time)
-            elif duty_cycle == 100:
-                GPIO.output(pinNum, ON)
-                time.sleep(cycle_time)
-            else:
-                on_time, off_time = getonofftime(cycle_time, duty_cycle)
-                GPIO.output(pinNum, ON)
-                time.sleep(on_time)
-                GPIO.output(pinNum, OFF)
-                time.sleep(off_time)
+def PID_Process(relay):
+    if !relay.isOn():
+        temp = get_ctemp()
+        activetime = get_Heat_Output(temp)
+        cycletime = get_Cycletime()
+        dutycycle = (activetime/cycletime) * 100
+        if duty_cycle == 0:
+            time.sleep(cycle_time)
+        elif duty_cycle == 100:
+            relay.switchOn()
+            time.sleep(cycle_time)
+        else:
+            on_time, off_time = getonofftime(cycletime, dutycycle)
+            relay.switchOn()
+            time.sleep(on_time)
+            relay.switchOff()
+            time.sleep(off_time)
 
 
 
@@ -94,7 +102,7 @@ def main():
         hum = get_chum()
         hour = get_chour()
     '''heat logic'''
-        
+        PID_Process(heatR)    
     '''cooling logic'''
     
     '''humidity logic'''
