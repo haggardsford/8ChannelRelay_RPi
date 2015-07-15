@@ -32,7 +32,7 @@ if __name__ == "__main__":
         #Database entries
 
         c.execute('''CREATE TABLE IF NOT EXISTS sensordata (id INTEGER PRIMARY KEY, temp REAL, hum REAL)''')
-        c.execute("INSERT INTO sensordata VALUES (?,?)", (temp, hum))
+        c.execute("INSERT INTO sensordata (temp, hum) VALUES (?,?)", (temp, hum))
         
         db.commit()
         db.close()
