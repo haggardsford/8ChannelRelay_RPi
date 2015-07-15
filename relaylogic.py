@@ -6,6 +6,7 @@
 #Relay 3 Humidity
 #Relay 4 Cooling
 import sqlite3
+import relay
 
     #connect to database, create cursor
 def get_cdata():
