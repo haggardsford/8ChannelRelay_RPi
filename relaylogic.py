@@ -7,6 +7,7 @@
 #Relay 4 Cooling
 import sqlite3
 import relay
+from datetime import datetime
 
     #connect to database, create cursor
 def get_cdata():
@@ -25,12 +26,16 @@ def get_chum():
     cdata = get_cdata()
     chum = cdata[2]
     return chum
+#get current hour (for use with scheduling lights)
+def get_chour():
+    now = datetime.now()
+    return now.hour
 
 def main():
     while True:
         temp = get_ctemp()
         hum = get_chum()
-    
+        hour = get_chour()
     '''heat logic'''
     
     '''cooling logic'''
