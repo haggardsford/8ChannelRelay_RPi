@@ -15,14 +15,21 @@ def get_cdata():
     c.execute('''SELECT * FROM sensordata ORDER BY id DESC LIMIT 1''')
     cdata = c.fetchone()
     return cdata
-
 #get current temperature
-def get_ctemp():
-    
-
+def get_ctemp(): 
+    cdata = get_cdata() 
+    ctemp = cdata[1] 
+    return ctemp 
+#get current humidity
+def get_chum():
+    cdata = get_cdata()
+    chum = cdata[2]
+    return chum
 
 def main():
-    ctemp, chum = get_cdata()
+    while True:
+        temp = get_ctemp()
+        hum = get_chum()
     
     '''heat logic'''
     
