@@ -6,7 +6,7 @@
 #Relay 3 Humidity
 #Relay 4 Cooling
 import sqlite3
-import relay
+import relay as R
 from datetime import datetime
 
     #connect to database, create cursor
@@ -31,13 +31,21 @@ def get_chour():
     now = datetime.now()
     return now.hour
 
+
+
 def main():
+    R.pinInit()
+    lightR = R.Relay(1)
+    heatR = R.Relay(2)
+    humR = R.Relay(3)
+    coolR = R.Relay(4)
+    
     while True:
         temp = get_ctemp()
         hum = get_chum()
         hour = get_chour()
     '''heat logic'''
-    
+        
     '''cooling logic'''
     
     '''humidity logic'''
