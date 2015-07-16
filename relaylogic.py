@@ -34,40 +34,33 @@ def get_chour():
     return now.hour
 
 
-
-    
-   
 #make a PID_Process object for each PID process
 class PID_Process:
     
     #name should be heat, cool, or hum. relay is the relay name ie heatR, humR, etc.
-    def __init__(self, name, relay, P, I, D, cycletime, setPoint):
+    def __init__(self, PIDobj, relayobj, cycletime, setPoint):
         self.P = P
         self.I = I
         self.D = D
-        self.name= name
-        self.relay = relay
-        self.cycletime = cycletime
         self.setPoint = setPoint
-        setattr(self, self.name, PID(P, I, D))
-
-    
-         
-    def set_pid(self, name, P, I, D):
-        self.name = PID(self.P, self.I, self.D)
-    
+        self.name= name
+        self.PIDobj = PIDobj
+        self.relayobj = relayobj
+        self.cycletime = cycletime
+        
+        
     def get_cycleTime(self):
         return self.cycletime
     
     def set_cycleTime(self, time):
         self.cycletime = time
       
-    def get_setPoint(self):
-        return self.setPoint
+    def get_setPoint(self):     #might now work
+        return self.PIDobj.setpoint
         
-    def set_setPoint(self, setPoint):
+    def set_setPoint(self, setPoint): #might not work
         self.setPoint = setPoint
-        self.name.setpoint(self.setPoint)
+        self.PIDobj.setpoint(setPoint)
    
     def get_activeTime(self):
         activetime = (get_Output(get_Value())/100)*get_cycleTime()
@@ -82,8 +75,8 @@ class PID_Process:
         off_time = get_cycleTime()*(1.0-duty)   
         return [on_time, off_time]
         
-    def get_Output(self, name, temp):
-        output = self.name.update(temp)
+    def get_Output(self, temp):
+        output = self.PIDobj.update(temp)
         if output < 0: 
             return 0 
         elif output > 100:   
@@ -91,7 +84,7 @@ class PID_Process:
         else: return output
     
     def get_Value(self):
-        if (self.name is heat) or (self.name is cool):
+        if (self.PIDobj is heat) or (self.PIDobj is cool):
             value = get_ctemp()
         else: 
             value = get_chum()
@@ -99,7 +92,7 @@ class PID_Process:
     
     def start_pid(self):
         while True:
-            if !self.relay.is_on():          
+            if !self.relayobj.is_on():          
                 value = get_Value()
                 activetime = self.get_Activetime()
                 cycletime = self.get_Cycletime()
@@ -107,13 +100,13 @@ class PID_Process:
                 if duty_cycle == 0:
                     time.sleep(cycle_time)
                 elif duty_cycle == 100:
-                    relay.switchOn()
+                    relayobj.switchOn()
                     time.sleep(cycle_time)
                 else:
                     on_time, off_time = getonofftime()
-                    relay.switchOn()
+                    relayobj.switchOn()
                     time.sleep(on_time)
-                    relay.switchOff()
+                    relayobj.switchOff()
                     time.sleep(off_time)
 
 
