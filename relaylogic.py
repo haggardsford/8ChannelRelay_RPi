@@ -137,7 +137,7 @@ def main():
     
 if __name__ == '__main__':
     main()
-'''heat = relaylogic.PID.PID(1.5,0,0)
+'''heatPID = relaylogic.PID.PID(1.5,0,0)
    relaylogic.R.pinInit()
    heatR = relaylogic.R.Relay(1)
    heatP = relaylogic.PID_Process(heat, heatR, 5, 75)
