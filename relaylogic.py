@@ -60,7 +60,7 @@ class PID_Process:
         self.PIDobj.setpoint(setPoint)
    
     def get_activeTime(self):
-        activetime = (get_Output())/100)*get_cycleTime()
+        activetime = (get_Output()/100)*get_cycleTime()
         return activetime
     
     def get_dutyTime(self):
