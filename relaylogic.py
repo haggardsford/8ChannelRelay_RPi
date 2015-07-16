@@ -52,7 +52,7 @@ class PID_Process:
         self.cycletime = time
       
     def get_setPoint(self):     #might now work
-        return self.PIDobj.setpoint
+        return self.PIDobj.set_point
         
     def set_setPoint(self, setPoint): #might not work
         self.setPoint = setPoint
