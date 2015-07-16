@@ -39,9 +39,6 @@ class PID_Process:
     
     #name should be heat, cool, or hum. relay is the relay name ie heatR, humR, etc.
     def __init__(self, PIDobj, relayobj, cycletime, setPoint):
-        self.P = P
-        self.I = I
-        self.D = D
         self.setPoint = setPoint
         self.name= name
         self.PIDobj = PIDobj
