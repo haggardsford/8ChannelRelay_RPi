@@ -42,11 +42,14 @@ class PID_Process:
     
     #name should be heat, cool, or hum. relay is the relay name ie heatR, humR, etc.
     def __init__(self, name, relay, P, I, D, cycletime, setPoint):
-        self.name = PID(self.P, self.I, self.D)
+        self.P = P
+        self.I = I
+        self.D = D
+        self.name= name
         self.relay = relay
         self.cycletime = cycletime
         self.setPoint = setPoint
-        
+        name = PID(P, I, D)
     
          
     def set_pid(self, name, P, I, D):
@@ -59,7 +62,7 @@ class PID_Process:
         self.cycletime = time
       
     def get_setPoint(self):
-        return self.setpoint
+        return self.setPoint
         
     def set_setPoint(self, setPoint):
         self.setPoint = setPoint
