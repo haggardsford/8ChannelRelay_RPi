@@ -94,22 +94,23 @@ class PID_Process:
         return value
     
     def start_pid(self):
-        if !self.relay.is_on():          
-            value = get_Value()
-            activetime = self.get_Activetime()
-            cycletime = self.get_Cycletime()
-            dutycycle = self.get_Dutytime()
-            if duty_cycle == 0:
-                time.sleep(cycle_time)
-            elif duty_cycle == 100:
-                relay.switchOn()
-                time.sleep(cycle_time)
-            else:
-                on_time, off_time = getonofftime()
-                relay.switchOn()
-                time.sleep(on_time)
-                relay.switchOff()
-                time.sleep(off_time)
+        while True:
+            if !self.relay.is_on():          
+                value = get_Value()
+                activetime = self.get_Activetime()
+                cycletime = self.get_Cycletime()
+                dutycycle = self.get_Dutytime()
+                if duty_cycle == 0:
+                    time.sleep(cycle_time)
+                elif duty_cycle == 100:
+                    relay.switchOn()
+                    time.sleep(cycle_time)
+                else:
+                    on_time, off_time = getonofftime()
+                    relay.switchOn()
+                    time.sleep(on_time)
+                    relay.switchOff()
+                    time.sleep(off_time)
 
 
 
@@ -125,7 +126,7 @@ def main():
 
     '''heat logic'''
     heatpid = PID_Process(heat, heatR, 1, 0.3, 0.1, 100, 78)    
-    heatpid.start()
+    heat_pid.start()
     '''cooling logic'''
     
     '''humidity logic'''
