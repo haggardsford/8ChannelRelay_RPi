@@ -43,6 +43,7 @@ class PID_Process:
         self.PIDobj = PIDobj
         self.relayobj = relayobj
         self.cycletime = cycletime
+        self.PIDobj.setpoint(setPoint)
         
         
     def get_cycleTime(self):
