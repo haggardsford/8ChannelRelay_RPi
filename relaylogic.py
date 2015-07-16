@@ -92,7 +92,7 @@ class PID_Process:
     
     def start_pid(self):
         while True:
-            if R.relay.is_on(self.relayobj) == False:        
+            if R.Relay.is_on(self.relayobj) == False:        
                 value = get_Value()
                 activetime = self.get_Activetime()
                 cycletime = self.get_Cycletime()
