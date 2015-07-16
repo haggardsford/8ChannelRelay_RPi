@@ -88,7 +88,7 @@ class PID_Process:
     
     def start_pid(self):
         while True:
-            if !self.relayobj.is_on():          
+            if !self.relayobj.is_on():    #this line causes error, look up correct syntax        
                 value = get_Value()
                 activetime = self.get_Activetime()
                 cycletime = self.get_Cycletime()
