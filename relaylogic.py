@@ -92,7 +92,7 @@ class PID_Process:
     
     def start_pid(self):
         while True:
-            if self.R.relay.is_on(relayobj) == False: ##########################        
+            if R.relay.is_on(self.relayobj) == False:        
                 value = get_Value()
                 activetime = self.get_Activetime()
                 cycletime = self.get_Cycletime()
@@ -100,13 +100,13 @@ class PID_Process:
                 if duty_cycle == 0:
                     time.sleep(cycle_time)
                 elif duty_cycle == 100:
-                    R.switchOn(relayobj)#####################
+                    R.switchOn(self.relayobj)
                     time.sleep(cycle_time)
                 else:
                     on_time, off_time = getonofftime()
-                    R.switchOn(relayobj)#########################
+                    R.switchOn(self.relayobj)
                     time.sleep(on_time)
-                    R.switchOff(relayobj)###########################
+                    R.switchOff(self.relayobj)
                     time.sleep(off_time)
 
 
@@ -137,4 +137,8 @@ def main():
     
 if __name__ == '__main__':
     main()
-
+'''heat = relaylogic.PID.PID(1.5,0,0)
+   relaylogic.R.pinInit()
+   heatR = relaylogic.R.Relay(1)
+   heatP = relaylogic.PID_Process(heat, heatR, 5, 75)
+   
