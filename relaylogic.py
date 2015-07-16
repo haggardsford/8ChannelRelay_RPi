@@ -33,57 +33,82 @@ def get_chour():
     now = datetime.now()
     return now.hour
 
-def set_pid(name, P, I, D):
-    name = PID(P, I, D)
 
-def set_setPoint(name, SP):
-    global setpoint
-    setpoint = SP
-    name.setPoint(SP)
-    return SP
 
-def set_Cycletime(time):
-    cycletime = time
-    return cycletime
-
-def get_Cycletime():
-    return cycletime
-
-def getonofftime(cycletime, dutycycle):
-    duty = duty_cycle/100.0
-    on_time = cycle_time*(duty)
-    off_time = cycle_time*(1.0-duty)   
-    return [on_time, off_time]
     
-
-def get_setPoint():
-    return setpoint
-
-def get_Heat_Output(temp):
-    heat_output = temp_controller(temp)
-    if heat_output < 0: 
-        return 0 
-    elif heat_output > 100:   
-        return 100 
-    else: return heat_output   
-
-def PID_Process(relay):
-    if !relay.is_on():          
-        temp = get_ctemp()
-        activetime = get_Heat_Output(temp)
-        cycletime = get_Cycletime()
-        dutycycle = (activetime/cycletime) * 100
-        if duty_cycle == 0:
-            time.sleep(cycle_time)
-        elif duty_cycle == 100:
-            relay.switchOn()
-            time.sleep(cycle_time)
-        else:
-            on_time, off_time = getonofftime(cycletime, dutycycle)
-            relay.switchOn()
-            time.sleep(on_time)
-            relay.switchOff()
-            time.sleep(off_time)
+   
+#make a PID_Process object for each PID process
+class PID_Process:
+    
+    #name should be heat, cool, or hum. relay is the relay name ie heatR, humR, etc.
+    def __init__(self, name, relay, P, I, D, cycletime, setPoint):
+        self.name = PID(self.P, self.I, self.D)
+        self.relay = relay
+        self.cycletime = cycletime
+        self.setPoint = setPoint
+        
+    
+         
+    def set_pid(self, name, P, I, D):
+        self.name = PID(self.P, self.I, self.D)
+    
+    def get_cycleTime(self):
+        return self.cycletime
+    
+    def set_cycleTime(self, time):
+        self.cycletime = time
+      
+    def get_setPoint(self):
+        return self.setpoint
+        
+    def set_setPoint(self, setPoint):
+        self.setPoint = setPoint
+        self.name.setpoint(self.setPoint)
+   
+    def get_activeTime(self):
+        activetime = (get_Output(get_Value())/100)*get_cycleTime()
+        return activetime
+    def get_dutyTime(self):
+        dutytime = (self.get_activeTime() / self.get_cycleTime() ) * 100
+        return dutytime
+    
+    def getonofftime(self):
+        duty = get_dutyTime()/100.0
+        on_time = get_cycleTime()*(duty)
+        off_time = get_cycleTime()*(1.0-duty)   
+        return [on_time, off_time]
+        
+    def get_Output(self, name, temp):
+        output = self.name.update(temp)
+        if output < 0: 
+            return 0 
+        elif output > 100:   
+            return 100 
+        else: return output
+    
+    def get_Value(self):
+        if self.name is heat or cool:
+            value = get_ctemp()
+        else: value = get_chum()
+        return value
+    
+    def start_pid(self):
+        if !self.relay.is_on():          
+            value = get_Value()
+            activetime = self.get_Activetime()
+            cycletime = self.get_Cycletime()
+            dutycycle = self.get_Dutytime()
+            if duty_cycle == 0:
+                time.sleep(cycle_time)
+            elif duty_cycle == 100:
+                relay.switchOn()
+                time.sleep(cycle_time)
+            else:
+                on_time, off_time = getonofftime()
+                relay.switchOn()
+                time.sleep(on_time)
+                relay.switchOff()
+                time.sleep(off_time)
 
 
 
@@ -97,12 +122,9 @@ def main():
     coolR = R.Relay(4)
     
 
-    while True:
-        temp = get_ctemp()
-        hum = get_chum()
-        hour = get_chour()
     '''heat logic'''
-        PID_Process(heatR)    
+    heatpid = PID_Process(heat, heatR, 1, 0.3, 0.1, 100, 78)    
+    heatpid.start()
     '''cooling logic'''
     
     '''humidity logic'''
