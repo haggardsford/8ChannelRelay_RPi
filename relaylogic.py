@@ -87,9 +87,10 @@ class PID_Process:
         else: return output
     
     def get_Value(self):
-        if self.name is heat or cool:
+        if (self.name is heat) or (self.name is cool):
             value = get_ctemp()
-        else: value = get_chum()
+        else: 
+            value = get_chum()
         return value
     
     def start_pid(self):
