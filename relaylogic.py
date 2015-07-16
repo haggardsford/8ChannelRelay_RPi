@@ -5,9 +5,9 @@
 #Relay 2 Heat
 #Relay 3 Humidity
 #Relay 4 Cooling
-import sqlite3
 import relay as R
 import pid
+import sqlite3
 from datetime import datetime
 from time import sleep
 
