@@ -102,7 +102,7 @@ class PID_Process:
                 elif duty_cycle == 100:
                     R.switchOn(relayobj)#####################
                     time.sleep(cycle_time)
-                else:i
+                else:
                     on_time, off_time = getonofftime()
                     R.switchOn(relayobj)#########################
                     time.sleep(on_time)
