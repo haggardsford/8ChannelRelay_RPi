@@ -49,7 +49,8 @@ class PID_Process:
         self.relay = relay
         self.cycletime = cycletime
         self.setPoint = setPoint
-        name = PID(P, I, D)
+        setattr(self, self.name, PID(P, I, D))
+
     
          
     def set_pid(self, name, P, I, D):
