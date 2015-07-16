@@ -55,7 +55,7 @@ class PID:
 
 		return PID
 
-	def setPoint(self,set_point):
+	def setpoint(self,set_point):
 		"""
 		Initilize the setpoint of PID
 		"""
