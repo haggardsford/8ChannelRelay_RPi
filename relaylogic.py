@@ -119,7 +119,8 @@ def main():
     
 
     '''heat logic'''
-    heatpid = PID_Process(heat, heatR, 1, 0.3, 0.1, 100, 78)    
+    heat = PID(1, 0, 0)
+    heatP = PID_Process(heat, heatR, 5, 82)    
     heat_pid.start()
     '''cooling logic'''
     
