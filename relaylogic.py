@@ -6,7 +6,7 @@
 #Relay 3 Humidity
 #Relay 4 Cooling
 import relay as R
-import pid
+import PID
 import sqlite3
 from datetime import datetime
 from time import sleep
@@ -60,8 +60,9 @@ class PID_Process:
         self.PIDobj.setpoint(setPoint)
    
     def get_activeTime(self):
-        activetime = (get_Output(get_Value())/100)*get_cycleTime()
+        activetime = (get_Output())/100)*get_cycleTime()
         return activetime
+    
     def get_dutyTime(self):
         dutytime = (self.get_activeTime() / self.get_cycleTime() ) * 100
         return dutytime
@@ -72,16 +73,18 @@ class PID_Process:
         off_time = get_cycleTime()*(1.0-duty)   
         return [on_time, off_time]
         
-    def get_Output(self, temp):
-        output = self.PIDobj.update(temp)
+    def get_Output(self):
+        output = self.PIDobj.update(get_Value())
         if output < 0: 
-            return 0 
+            result = 0
+            return result
         elif output > 100:   
-            return 100 
+            result = 100
+            return result
         else: return output
     
     def get_Value(self):
-        if (self.PIDobj is heat) or (self.PIDobj is cool):
+        if (self.PIDobj == heatP) or (self.PIDobj == coolP):
             value = get_ctemp()
         else: 
             value = get_chum()
@@ -89,7 +92,7 @@ class PID_Process:
     
     def start_pid(self):
         while True:
-            if !self.relayobj.is_on():    #this line causes error, look up correct syntax        
+            if self.R.relay.is_on(relayobj) == False: ##########################        
                 value = get_Value()
                 activetime = self.get_Activetime()
                 cycletime = self.get_Cycletime()
@@ -97,13 +100,13 @@ class PID_Process:
                 if duty_cycle == 0:
                     time.sleep(cycle_time)
                 elif duty_cycle == 100:
-                    relayobj.switchOn()
+                    R.switchOn(relayobj)#####################
                     time.sleep(cycle_time)
-                else:
+                else:i
                     on_time, off_time = getonofftime()
-                    relayobj.switchOn()
+                    R.switchOn(relayobj)#########################
                     time.sleep(on_time)
-                    relayobj.switchOff()
+                    R.switchOff(relayobj)###########################
                     time.sleep(off_time)
 
 
