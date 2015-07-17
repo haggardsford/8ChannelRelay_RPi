@@ -68,7 +68,7 @@ class PID_Process:
         return dutytime
     
     def getonofftime(self):
-        duty = get_dutyTime(self.param)/100.0
+        duty = get_dutyTime()/100.0
         on_time = get_cycleTime()*(duty)
         off_time = get_cycleTime()*(1.0-duty)   
         return [on_time, off_time]
