@@ -64,7 +64,7 @@ class PID_Process:
         return activetime
     
     def get_dutyTime(self):
-        dutytime = (self.get_activeTime() / self.get_cycleTime() ) * 100
+        dutytime = (get_activeTime() / get_cycleTime() ) * 100
         return dutytime
     
     def getonofftime(self):
@@ -93,9 +93,9 @@ class PID_Process:
     def start_pid(self):
         while True:
             if R.Relay.is_on(self.relayobj) == False:        
-                activetime = self.get_Activetime()
-                cycletime = self.get_Cycletime()
-                dutycycle = self.get_Dutytime()
+                activetime = get_Activetime()
+                cycletime = get_Cycletime()
+                dutycycle = get_Dutytime()
                 if duty_cycle == 0:
                     time.sleep(cycle_time)
                 elif duty_cycle == 100:
