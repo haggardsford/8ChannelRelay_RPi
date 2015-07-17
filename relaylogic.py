@@ -83,10 +83,10 @@ class PID_Process:
             return result
         else: return output
     
-    def get_Value(self):
-        if (self.PIDobj == heatP) or (self.PIDobj == coolP):
+    def get_Value(self, option):
+        if (option  == temp):
             value = get_ctemp()
-        else: 
+        elif (option == hum): 
             value = get_chum()
         return value
     
