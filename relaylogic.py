@@ -37,14 +37,14 @@ def get_chour():
 #make a PID_Process object for each PID process
 class PID_Process:
     
-    #name should be heat, cool, or hum. relay is the relay name ie heatR, humR, etc.
-    def __init__(self, PIDobj, relayobj, cycletime, setPoint):
+    #name should be heat, cool, or hum. relay is the relay name ie heatR, humR, etc., param== 'temp' or 'hum'
+    def __init__(self, PIDobj, relayobj, cycletime, setPoint, param):
         self.setPoint = setPoint
         self.PIDobj = PIDobj
         self.relayobj = relayobj
         self.cycletime = cycletime
         self.PIDobj.setpoint(setPoint)
-        
+        self.param = param
         
     def get_cycleTime(self):
         return self.cycletime
@@ -68,7 +68,7 @@ class PID_Process:
         return dutytime
     
     def getonofftime(self):
-        duty = get_dutyTime()/100.0
+        duty = get_dutyTime(self.param)/100.0
         on_time = get_cycleTime()*(duty)
         off_time = get_cycleTime()*(1.0-duty)   
         return [on_time, off_time]
@@ -83,17 +83,16 @@ class PID_Process:
             return result
         else: return output
     
-    def get_Value(self, option):
-        if (option  == temp):
+    def get_Value(self):
+        if (self.param  == 'temp'):
             value = get_ctemp()
-        elif (option == hum): 
+        elif (self.param == 'hum'): 
             value = get_chum()
         return value
     
     def start_pid(self):
         while True:
             if R.Relay.is_on(self.relayobj) == False:        
-                value = get_Value()
                 activetime = self.get_Activetime()
                 cycletime = self.get_Cycletime()
                 dutycycle = self.get_Dutytime()
