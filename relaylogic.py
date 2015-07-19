@@ -9,7 +9,7 @@ import relay as R
 import PID
 import sqlite3
 from datetime import datetime
-from time import sleep
+import time
 
     #connect to database, create cursor
 def get_cdata():
@@ -60,21 +60,21 @@ class PID_Process:
         self.PIDobj.setpoint(setPoint)
    
     def get_activeTime(self):
-        activetime = (get_Output()/100)*get_cycleTime()
+        activetime = (self.get_Output()/100)* self.get_cycleTime()
         return activetime
     
     def get_dutyTime(self):
-        dutytime = (get_activeTime() / get_cycleTime() ) * 100
+        dutytime = (self.get_activeTime() / self.get_cycleTime() ) * 100
         return dutytime
     
     def getonofftime(self):
-        duty = get_dutyTime()/100.0
-        on_time = get_cycleTime()*(duty)
-        off_time = get_cycleTime()*(1.0-duty)   
+        duty = self.get_dutyTime()/100.0
+        on_time = self.get_cycleTime()*(duty)
+        off_time = self.get_cycleTime()*(1.0-duty)   
         return [on_time, off_time]
         
     def get_Output(self):
-        output = self.PIDobj.update(get_Value())
+        output = self.PIDobj.update(self.get_Value())
         if output < 0: 
             result = 0
             return result
@@ -84,25 +84,26 @@ class PID_Process:
         else: return output
     
     def get_Value(self):
-        if (self.param  == 'temp'):
+        if (self.param  == 'temp'): 
             value = get_ctemp()
-        elif (self.param == 'hum'): 
+            return value
+        elif (self.param == 'hum'):
             value = get_chum()
-        return value
+            return value
+        else: 
+            pass 
     
     def start_pid(self):
         while True:
             if R.Relay.is_on(self.relayobj) == False:        
-                activetime = get_Activetime()
-                cycletime = get_Cycletime()
-                dutycycle = get_Dutytime()
-                if duty_cycle == 0:
+                dutycycle = self.get_dutyTime()
+                if dutycycle == 0:
                     time.sleep(cycle_time)
-                elif duty_cycle == 100:
+                elif dutycycle == 100:
                     R.switchOn(self.relayobj)
                     time.sleep(cycle_time)
                 else:
-                    on_time, off_time = getonofftime()
+                    on_time, off_time = self.getonofftime()
                     R.switchOn(self.relayobj)
                     time.sleep(on_time)
                     R.switchOff(self.relayobj)
@@ -113,17 +114,20 @@ class PID_Process:
 
 
 def main():
-    R.pinInit()
-    lightR = R.Relay(1)
-    heatR = R.Relay(2)
-    humR = R.Relay(3)
-    coolR = R.Relay(4)
-    
-
-    '''heat logic'''
-    heat = PID(1, 0, 0)
-    heatP = PID_Process(heat, heatR, 5, 82)    
-    heat_pid.start()
+    R.pinInit()              
+    lightR = R.Relay(1)                                              
+    heatR = R.Relay(2)                                             
+    humR = R.Relay(3)                                             
+    coolR = R.Relay(4)                                           
+    heat = PID.PID(5, 0, 0) 
+    heatP = PID_Process(heat, heatR, 100, 32, "temp" )  
+    print ("Heat Process param=" + heatP.param) 
+    print ("Current Temp= {0} ".format(heatP.get_Value()))
+    print ("PID Output= {0}" .format(heatP.get_Output())) 
+    print ("HeatP Setpoint={0} ".format(heatP.get_setPoint()))
+    print ("On/Off Time= {0}".format(heatP.getonofftime()))
+    print ("starting PID loop")
+    heatP.start_pid()
     '''cooling logic'''
     
     '''humidity logic'''
@@ -139,5 +143,5 @@ if __name__ == '__main__':
 '''heatPID = relaylogic.PID.PID(1.5,0,0)
    relaylogic.R.pinInit()
    heatR = relaylogic.R.Relay(1)
-   heatP = relaylogic.PID_Process(heat, heatR, 5, 75)
-   
+   heatP = relaylogic.PID_Process(heat, heatR, 100, 75)
+'''   
