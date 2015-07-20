@@ -9,7 +9,7 @@ import relay as R
 import PID
 import sqlite3
 from datetime import datetime
-import time
+from time import sleep
 
     #connect to database, create cursor
 def get_cdata():
@@ -98,16 +98,16 @@ class PID_Process:
             if R.Relay.is_on(self.relayobj) == False:        
                 dutycycle = self.get_dutyTime()
                 if dutycycle == 0:
-                    time.sleep(cycle_time)
+                    sleep(cycle_time)
                 elif dutycycle == 100:
                     R.switchOn(self.relayobj)
-                    time.sleep(cycle_time)
+                    sleep(cycle_time)
                 else:
                     on_time, off_time = self.getonofftime()
                     R.switchOn(self.relayobj)
-                    time.sleep(on_time)
+                    sleep(on_time)
                     R.switchOff(self.relayobj)
-                    time.sleep(off_time)
+                    sleep(off_time)
 
 
 
