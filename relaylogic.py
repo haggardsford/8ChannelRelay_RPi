@@ -35,6 +35,37 @@ def get_chour():
 
 
 #make a PID_Process object for each PID process
+class State_Process:
+    #, initial == "ON" or "OFF"
+    def __init__(self, relayobj, initial)
+        self.relayobj = relayobj
+        self.initial = initial
+        if self.initial == "ON":
+            if R.Relay.in_on(self.relayobj) == False:
+                R.switch_On(self.relayobj)
+            
+        
+        
+    def get_initial(self):
+        return self.initial == "Low"
+        return self.On_Duration
+        
+    def get_State(self):
+        return R.Relay.is_on(self.relayobj)
+    
+    def set_StateON(self):
+        if self.get_State() == False:
+            R.switch_On(self.relayobj)
+        else: 
+            return False
+    def set_StateOFF(self):
+        if self.get_State() == True:
+            R.switch_Off(self.relayobj)
+        else: 
+            return False
+            
+    
+
 class PID_Process:
     
     #name should be heat, cool, or hum. relay is the relay name ie heatR, humR, etc., param== 'temp' or 'hum'
