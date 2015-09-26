@@ -37,7 +37,7 @@ def get_chour():
 #make a PID_Process object for each PID process
 class State_Process:
     #, initial == "ON" or "OFF"
-    def __init__(self, relayobj, initial)
+    def __init__(self, relayobj, initial):
         self.relayobj = relayobj
         self.initial = initial
         if self.initial == "ON":
