@@ -129,7 +129,7 @@ class PID_Process:
             if R.Relay.is_on(self.relayobj) == False:        
                 dutycycle = self.get_dutyTime()
                 if dutycycle == 0:
-                    sleep(cycle_time)
+                    sleep(self.get_cycleTime())
                 elif dutycycle == 100:
                     R.switchOn(self.relayobj)
                     sleep(cycle_time)
