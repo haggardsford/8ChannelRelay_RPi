@@ -5,7 +5,7 @@
 #Relay 9 = Heat
 
 
-import relay as R
+import HeaterRelay as R
 import PID
 import sqlite3
 from datetime import datetime
